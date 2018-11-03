@@ -1,16 +1,18 @@
 package org.redischool.fall2018project.usecases.shoppingcart;
 
-public class ProductDto {
+public class ItemDto {
 
     private String name;
     private double price;
+    private int quantity;
 
-    public ProductDto() {
+    public ItemDto() {
     }
 
-    public ProductDto(String name, double price) {
+    public ItemDto(String name, double price, int quantity) {
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public String getName() {

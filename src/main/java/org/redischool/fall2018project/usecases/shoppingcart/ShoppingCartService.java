@@ -1,20 +1,25 @@
 package org.redischool.fall2018project.usecases.shoppingcart;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public final class ShoppingCartService {
-    private final ShoppingCartRepository shoppingCartRepository;
 
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
+
+    public ShoppingCart getCurrentShoppingCart(String id) {
+        return shoppingCartRepository.findById(id).get();
     }
 
-    public ShoppingCart getCurrentShoppingCart() {
-        return shoppingCartRepository.fetchShoppingCart();
-    }
-
-    public void addToCurrentShoppingCart(Product product, int quantity) {
-        ShoppingCart shoppingCart = shoppingCartRepository.fetchShoppingCart();
+    public void addToCurrentShoppingCart(Product product, int quantity, String id) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(id).get();
         shoppingCart.add(product, quantity);
-        shoppingCartRepository.persistShoppingCart(shoppingCart);
+        shoppingCartRepository.save(shoppingCart);
     }
 
+    public ShoppingCart createShoppingCart() {
+        return shoppingCartRepository.save(new ShoppingCart());
+    }
 }

@@ -1,7 +1,9 @@
 package org.redischool.fall2018project.usecases.shoppingcart;
 
-public interface ShoppingCartRepository {
-    void persistShoppingCart(ShoppingCart shoppingCart);
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-    ShoppingCart fetchShoppingCart();
+@Repository
+public interface ShoppingCartRepository extends MongoRepository<ShoppingCart, String> {
+
 }

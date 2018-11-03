@@ -1,6 +1,8 @@
 package org.redischool.fall2018project.usecases.shoppingcart;
 
 import com.google.common.collect.ImmutableList;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,29 +11,42 @@ import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
+@Document
 public class ShoppingCart {
-    private final Map<Product, Item> items = new LinkedHashMap<>();
+
+    @Id
+    private String id;
+
+    private final Map<String, Item> items = new LinkedHashMap<>();
 
     public List<Item> items() {
         return ImmutableList.copyOf(items.values());
     }
 
     ShoppingCart add(Product product, int quantity) {
-        if (!items.containsKey(product)) {
-            items.put(product, new Item(product, quantity));
+        if (!items.containsKey(product.getName())) {
+            items.put(product.getName(), new Item(product, quantity));
         } else {
-            Item existingItem = items.get(product);
-            items.put(product, existingItem.plus(quantity));
+            Item existingItem = items.get(product.getName());
+            items.put(product.getName(), existingItem.plus(quantity));
         }
         return this;
     }
 
     public double total() {
         double totalprice = 0;
-       for(Item item: items()){
-           totalprice += item.product.getPrice();
-       }
-           return totalprice;
+        for (Item item : items()) {
+            totalprice += item.product.getPrice();
+        }
+        return totalprice;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public ShoppingCartDto toShoppingCartDto() {
+        return new ShoppingCartDto(id, items());
     }
 
     static class Item {
@@ -60,6 +75,19 @@ public class ShoppingCart {
 
         private Item plus(int quantity) {
             return new Item(product, this.quantity + quantity);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(product, quantity);
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+
+        public int getQuantity() {
+            return quantity;
         }
     }
 }
