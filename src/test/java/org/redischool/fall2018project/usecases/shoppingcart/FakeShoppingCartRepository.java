@@ -12,4 +12,9 @@ public class FakeShoppingCartRepository implements ShoppingCartRepository {
     public ShoppingCart fetchShoppingCart() {
         return shoppingCart;
     }
+
+    @Override
+    public ShoppingCart fetchShoppingCart(String user) {
+        return null;
+    }
 }

@@ -17,6 +17,11 @@ public class ItemDto {
         this.quantity = quantity;
     }
 
+    public ShoppingCart.Item toItem() {
+        Product product = new Product(name, price);
+        return new ShoppingCart.Item(product, quantity);
+    }
+
     public static ItemDto of(ShoppingCart.Item item) {
         return new ItemDto(item.getProduct().getName(), item.getProduct().getPrice(), item.getQuantity());
     }

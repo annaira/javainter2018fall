@@ -10,6 +10,17 @@ public class ShoppingCartDto {
     public ShoppingCartDto() {
     }
 
+    public ShoppingCart toShoppingCart() {
+        ShoppingCart shoppingCart = new ShoppingCart();
+
+        for (ItemDto itemDto: items) {
+            ShoppingCart.Item item = itemDto.toItem();
+            shoppingCart.add(item.getProduct(), item.getQuantity());
+        }
+
+        return shoppingCart;
+    }
+
     public static ShoppingCartDto of(ShoppingCart shoppingCart) {
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
         List<ItemDto> newItems = new ArrayList<>();
